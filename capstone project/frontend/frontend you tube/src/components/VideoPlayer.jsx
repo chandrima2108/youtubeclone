@@ -1,34 +1,86 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import axios from 'axios';
+// src/components/VideoPlayerPage.js
+import React, { useState } from 'react';
 
-const VideoPlayer = () => {
-    const { id } = useParams();
-    const [video, setVideo] = useState(null);
+// Sample data for the video
+const sampleVideo = {
+    videoId: "video01",
+    title: "Learn React in 30 Minutes",
+    description: "A quick tutorial to get started with React.",
+    channelName: "Code with John",
+    likes: 1023,
+    dislikes: 45,
+    comments: [
+        {
+            commentId: "comment01",
+            userId: "user02",
+            text: "Great video! Very helpful.",
+        },
+        {
+            commentId: "comment02",
+            userId: "user03",
+            text: "Thanks for the tutorial!",
+        },
+    ],
+};
 
-    useEffect(() => {
-        const fetchVideo = async () => {
-            const response = await axios.get(`/api/videos/${id}`); // Adjust the API endpoint as needed
-            setVideo(response.data);
+const VideoPlayerPage = () => {
+    const [video, setVideo] = useState(sampleVideo);
+    const [newComment, setNewComment] = useState('');
+
+    const handleAddComment = () => {
+        const commentId = `comment${video.comments.length + 1}`;
+        const newCommentObj = {
+            commentId,
+            userId: "user01", // Replace with the actual user ID
+            text: newComment,
         };
-        fetchVideo();
-    }, [id]);
+        setVideo(prevVideo => ({
+            ...prevVideo,
+            comments: [...prevVideo.comments, newCommentObj],
+        }));
+        setNewComment('');
+    };
 
-    if (!video) return <div>Loading...</div>;
+    const handleDeleteComment = (commentId) => {
+        setVideo(prevVideo => ({
+            ...prevVideo,
+            comments: prevVideo.comments.filter(comment => comment.commentId !== commentId),
+        }));
+    };
 
     return (
-        <div>
-            <h2>{video.title}</h2>
+        <div className="video-player-page">
+           <h1>{video.title}</h1>
             <video controls>
-                <source src={video.videoUrl} type="video/mp4" />
-                Your browser does not support the video tag.
+                <source src={`https://example.com/videos/${video.videoId}.mp4`} type="video/mp4" />
+               
             </video>
             <p>{video.description}</p>
-            <p>Uploaded by: {video.uploader}</p>
-            <p>{video.views} views</p>
-            {/* Add like/dislike buttons and comments section here */}
+            <p>Channel: {video.channelName}</p>
+            <div className="like-dislike-buttons">
+                <button>👍 {video.likes}</button>
+                <button>👎 {video.dislikes}</button>
+            </div>
+            <h2>Comments</h2>
+            <div className="comments-section">
+                {video.comments.map(comment => (
+                    <div key={comment.commentId} className="comment">
+                        <p>{comment.text}</p>
+                        <button onClick={() => handleDeleteComment(comment.commentId)}>Delete</button>
+                    </div>
+                ))}
+            </div>
+            <div className="add-comment">
+                <input
+                    type="text"
+                    value={newComment}
+                    onChange={(e) => setNewComment(e.target.value)}
+                    placeholder="Add a comment..."
+                />
+                <button onClick={handleAddComment}>Post Comment</button>
+            </div>
         </div>
     );
 };
 
-export default VideoPlayer; 
+export default VideoPlayerPage;

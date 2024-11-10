@@ -4,7 +4,7 @@
   "description": "Back-end for YouTube clone using Node.js, Express, and MongoDB",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
+    
     "dev": "nodemon server.js"
   },
   "dependencies": {

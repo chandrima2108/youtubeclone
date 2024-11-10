@@ -1,25 +1,58 @@
-
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate for redirection
-
+import { Link, useNavigate } from 'react-router-dom';
+import { FaHome } from "react-icons/fa";
+import { SiYoutubeshorts } from "react-icons/si";
+import { MdSubscriptions } from "react-icons/md";
+import { FaRegUserCircle } from "react-icons/fa";
+import { GoHistory } from "react-icons/go";
+import { SiFireship } from "react-icons/si";
+import { LuShoppingBag } from "react-icons/lu";
+import { IoMusicalNotesOutline } from "react-icons/io5";
+import { GiAerialSignal } from "react-icons/gi";
+import { BiSolidMoviePlay } from "react-icons/bi";
+import { RiSignalTowerFill } from "react-icons/ri";
+import { GiHanger } from "react-icons/gi";
+import { GoLightBulb } from "react-icons/go";
+import { GoTrophy } from "react-icons/go";
+import { SiYoutubegaming } from "react-icons/si";
+import { IoNewspaperOutline } from "react-icons/io5";
+import { TbBrandYoutubeKids } from "react-icons/tb";
+import { FaYoutube } from "react-icons/fa";
+import { SiYoutubemusic } from "react-icons/si";
+import { CiSettings } from "react-icons/ci";
+import { FaRegFlag } from "react-icons/fa";
+import { IoIosHelpCircleOutline } from "react-icons/io";
+import { CiSquareInfo } from "react-icons/ci";
 const Navbar = () => {
     const [searchTerm, setSearchTerm] = useState('');
-    const navigate = useNavigate(); // Initialize useNavigate
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const navigate = useNavigate();
+    const username = localStorage.getItem('username'); // Get the username from local storage
+   
 
     const handleSearch = (e) => {
-        e.preventDefault(); // Prevent default form submission
+        e.preventDefault();
         if (searchTerm.trim()) {
-            // Redirect to search results page with the search term
             navigate(`/search?query=${encodeURIComponent(searchTerm)}`);
         }
+    };
+
+    const toggleDropdown = () => {
+        setDropdownOpen(!dropdownOpen);
+    };
+
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('profilePicture');
+        navigate('/auth'); // Redirect to sign-in page
     };
 
     return (
         <nav className="bg-white shadow-md">
             <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
                 <div className="flex items-center">
-                    {/* Dummy hamburger icon */}
-                    <div className="h-6 w-6 text-gray-700 mr-4 cursor-pointer">
+                    {/* Hamburger icon */}
+                    <div onClick={toggleDropdown} className="h-6 w-6 text-gray-700 mr-4 cursor-pointer">
                         <div className="bg-gray-700 h-1 w-full mb-1"></div>
                         <div className="bg-gray-700 h-1 w-full mb-1"></div>
                         <div className="bg-gray-700 h-1 w-full"></div>
@@ -35,43 +68,147 @@ const Navbar = () => {
                     </Link>
                 </div>
                 <div className="flex-grow mx-4">
-                    <form onSubmit={handleSearch}> {/* Add form for search */}
+                    <form onSubmit={handleSearch}>
                         <input
                             type="text"
                             placeholder="Search"
                             value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)} // Update state on input change
+                            onChange={(e) => setSearchTerm(e.target.value)}
                             className="w-full border border-gray-300 rounded-full py-2 px-4 focus:outline-none focus:ring-2 focus:ring-red-600"
                         />
                     </form>
                 </div>
                 <div className="flex items-center space-x-4">
-                    {/* Microphone icon */}
-                    <button className="text-gray-700 hover:text-red-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14a2 2 0 100-4 2 2 0 000 4zm0 4a6 6 0 006-6V7a6 6 0 00-12 0v5a6 6 0 006 6z" />
-                        </svg>
-                    </button>
-                    {/* Upload icon */}
-                    <button className="text-gray-700 hover:text-red-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 16.5V21h18v-4.5M12 3v12m0 0l-3-3m3 3l3-3" />
-                        </svg>
-                    </button>
-                    {/* Notification bell icon */}
-                    <button className="text-gray-700 hover:text-red-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.002 2.002 0 0018 14V10a6 6 0 00-12 0v4a2.002 2.002 0 00-.595 1.595L3 17h5m12 0a2 2 0 01-2 2H9a2 2 0 01-2-2" />
-                        </svg>
-                    </button>
-                    {/* User profile icon (placeholder) */}
-                    <button className="text-gray-700 hover:text-red-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-4.42 0-8 2.58-8 6v1h16v-1c0-3.42-3.58-6-8-6z" />
-                        </svg>
-                    </button>
+                    {username ? (
+                        <>
+                            {/* Profile Icon */}
+                            <div className="relative">
+                                <Link to ="/channel">
+                                <img
+                                    src="https://ui-avatars.com/api/username" 
+                                    alt="Profile"
+                                    className="h-8 w-8 rounded-full cursor-pointer"
+                                    onClick={() => navigate(`/home/${username}`)} // Navigate to user's home on click
+                                />
+                                </Link>
+                                <div className="absolute right-0 bottom-0 h-2 w-2 bg-green-500 rounded-full"></div> {/* Optional online indicator */}
+                            </div>
+                            <button onClick={handleLogout} className="text-gray-700 hover:text-red-600">
+                                Logout
+                            </button>
+                            
+                        </>
+                     
+
+                    ) : (
+                        
+                        <Link to="/auth" className="text-gray-700 hover:text-red-600">
+                            <div className="relative">
+                            <Link to ="/channel">
+                                <img
+                                    src="https://ui-avatars.com/api/username" 
+                                    alt="Profile"
+                                    className="h-8 w-8 rounded-full cursor-pointer"
+                                    onClick={() => navigate(`/home/${username}`)} // Navigate to user's home on click
+                                />
+                                </Link>
+                                
+                                <div className="absolute right-0 bottom-0 h-2 w-2 bg-green-500 rounded-full"></div> {/* Optional online indicator */}
+                            </div>
+                           <button onClick={handleLogout} className="text-gray-700 hover:text-red-600">
+                                Logout
+                            </button>
+                        </Link>
+                    )}
                 </div>
             </div>
+            {/* Dropdown Menu */}
+            {dropdownOpen && (
+                <div className="absolute bg-white shadow-lg mt-2 rounded-md w-48 z-10">
+                    <ul className="py-2">
+                        <li>
+                            <Link to="/Home" className="block px-4 py-2 text-gray-700 hover:bg-gray-100"><FaHome className='inline m-3' />Home</Link>
+                        </li>
+                        <li>
+                            <Link to="/shorts" className="block px-4 py-2 text-gray-700 hover:bg-gray-100"><SiYoutubeshorts className='inline m-3' />Shorts</Link>
+                        </li>
+                        <li>
+                            <Link to="/Subscription" className="block px-4 py-2 text-gray-700 hover:bg-gray-100"><MdSubscriptions className='inline m-3' />Subscription</Link>
+                        </li>
+                        <li>
+                            <Link to="/you" className="block px-4 py-2 text-gray-700 hover:bg-gray-100"><FaRegUserCircle className='inline m-3'/>You</Link>
+                        </li>
+                        <li>
+                            <Link to="/history" className="block px-4 py-2 text-gray-700 hover:bg-gray-100"><GoHistory className='inline m-3'/>History</Link>
+                        </li>
+                        <li>
+                            <Link to="/signin" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Sign in to like videos, comment, and subscribe.
+                          <br/>  <FaRegUserCircle className='inline m-3'/>Sign in     </Link>
+                                                                                                                           
+                        </li>
+                        <li>
+                            <Link to="/explore" className="block px-4 py-2 text-gray-700 hover:bg-gray-100 ">Explore</Link>
+                        </li>
+                        <li>
+                            <Link to="/Trending" className="block px-4 py-2 text-gray-700 hover:bg-gray-100"><SiFireship className='inline m-3'/>Trending</Link>
+                        </li>
+                        <li>
+                            <Link to="/Shopping" className="block px-4 py-2 text-gray-700 hover:bg-gray-100"><LuShoppingBag className='inline m-3' />Shopping</Link>
+                        </li>
+                        <li>
+                            <Link to="/Music" className="block px-4 py-2 text-gray-700 hover:bg-gray-100"><IoMusicalNotesOutline className='inline m-3' />Music</Link>
+                        </li>
+                        <li>
+                            <Link to="/Movie" className="block px-4 py-2 text-gray-700 hover:bg-gray-100"><BiSolidMoviePlay className='inline m-3'/>Movies</Link>
+                        </li>
+                        <li>
+                            <Link to="/Live" className="block px-4 py-2 text-gray-700 hover:bg-gray-100"><GiAerialSignal className='inline m-3' />Live</Link>
+                        </li>
+                        <li>
+                            <Link to="/Gaming" className="block px-4 py-2 text-gray-700 hover:bg-gray-100"><SiYoutubegaming className='inline m-3'/>Gaming</Link>
+                        </li>
+                        <li>
+                            <Link to="/News" className="block px-4 py-2 text-gray-700 hover:bg-gray-100"><IoNewspaperOutline className='inline m-3'/>News</Link>
+                        </li>
+                        <li>
+                            <Link to="/Sports" className="block px-4 py-2 text-gray-700 hover:bg-gray-100"><GoTrophy className='inline m-3'/>Sports</Link>
+                        </li>
+                        <li>
+                            <Link to="/Courses" className="block px-4 py-2 text-gray-700 hover:bg-gray-100"><GoLightBulb className='inline m-3'/>Courses</Link>
+                        </li>
+                        <li>
+                            <Link to="/Fashion" className="block px-4 py-2 text-gray-700 hover:bg-gray-100"><GiHanger className='inline m-3'/>Fashion</Link>
+                        </li>
+                        <li>
+                            <Link to="/Podcast" className="block px-4 py-2 text-gray-700 hover:bg-gray-100"><RiSignalTowerFill className='inline m-3'/>Podcast</Link>
+                        </li>
+                        <li>
+                            <Link to="/home" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">More from YouTube</Link>
+                        </li>
+                        <li>
+                            <Link to="/home" className="block px-4 py-2 text-gray-700 hover:bg-gray-100"><FaYoutube className='inline m-1' />YouTube Premium</Link>
+                        </li>
+                        <li>
+                            <Link to="/YoutubeMusic" className="block px-4 py-2 text-gray-700 hover:bg-gray-100"><SiYoutubemusic className='inline m-1'/>YouTube Music</Link>
+                        </li>
+                        <li>
+                            <Link to="/youtubekids" className="block px-4 py-2 text-gray-700 hover:bg-gray-100"><TbBrandYoutubeKids className='inline m-1'/> YouTube kids</Link>
+                        </li>
+                        <li>
+                            <Link to="/settings" className="block px-4 py-2 text-gray-700 hover:bg-gray-100"><CiSettings className='inline m-1'/> Settings</Link>
+                        </li>
+                        <li>
+                            <Link to="/ReportHistory" className="block px-4 py-2 text-gray-700 hover:bg-gray-100"><FaRegFlag className='inline m-1'/> Report History</Link>
+                        </li>
+                        <li>
+                            <Link to="/Help" className="block px-4 py-2 text-gray-700 hover:bg-gray-100"><IoIosHelpCircleOutline className='inline m-1'/> Help</Link>
+                        </li>
+                        <li>
+                            <Link to="/send Feedback" className="block px-4 py-2 text-gray-700 hover:bg-gray-100"><CiSquareInfo  className='inline m-1'/> Send Feedback</Link>
+                        </li>
+                    </ul>
+                </div>
+            )}
         </nav>
     );
 };
